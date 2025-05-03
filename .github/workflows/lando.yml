@@ -26,3 +26,5 @@ jobs:
         run: lando logs -s database
       - name: Inspect logs
         run: cat sharevolume_database_log_mysql/mysqld.log
+      - name: Inspect logs from within Alloy
+        run: lando ssh -u root -s alloy -c 'cat /logs/database_mysql/mysqld.log'
