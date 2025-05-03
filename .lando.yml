@@ -13,7 +13,7 @@ services:
     overrides:
       volumes:
         # volume shared with alloy
-        - share-volume_appserver_log_apache2:/var/log/apache2
+        - sharevolume_appserver_log_apache2:/var/log/apache2
 
   alloy:
     type: lando
@@ -25,9 +25,9 @@ services:
       volumes:
         - ./config/alloy/config.alloy:/etc/alloy/config.alloy
         # volume shared with appserver
-        - share-volume_appserver_log_apache2:/logs/appserver_apache2
+        - sharevolume_appserver_log_apache2:/logs/appserver_apache2
         # volume shared with database
-        - share-volume_database_log_mysql:/logs/database_mysql
+        - sharevolume_database_log_mysql:/logs/database_mysql
 
   database:
     # run_as_root:
@@ -43,4 +43,4 @@ services:
 
       volumes:
         # volume shared with alloy
-        - share-volume_database_log_mysql:/opt/bitnami/mysql/logs
+        - sharevolume_database_log_mysql:/opt/bitnami/mysql/logs
