@@ -20,5 +20,7 @@ jobs:
         run: lando start --debug
       - name: Inspect files
         run: ls -lAF
-      - name: Lando check MySQL
+      - name: Lando check MySQL log files
         run: lando ssh -u root -s database -c 'ls -lAF /opt/bitnami/mysql/logs'
+      - name: Lando logs for database
+        run: lando logs -s database
