@@ -24,3 +24,5 @@ jobs:
         run: lando ssh -u root -s database -c 'ls -lAF /opt/bitnami/mysql/logs'
       - name: Lando logs for database
         run: lando logs -s database
+      - name: Inspect logs
+        run: cat sharevolume_database_log_mysql/mysqld.log
