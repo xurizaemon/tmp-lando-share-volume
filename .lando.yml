@@ -1,0 +1,46 @@
+name: share-volume
+recipe: lamp
+config:
+  webroot: web
+  config:
+    # A MySQL config which turns on logging.
+    # database: config/example/mysql/custom.cnf
+
+services:
+  appserver:
+    config:
+      vhosts: config/example/apache2/default.conf
+    overrides:
+      volumes:
+        # volume shared with alloy
+        - share-volume_appserver_log_apache2:/var/log/apache2
+
+  alloy:
+    type: lando
+    api: 3
+    services:
+      image: grafana/alloy:latest
+      command: /bin/alloy run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data --stability.level=experimental /etc/alloy
+    overrides:
+      volumes:
+        - ./config/alloy/config.alloy:/etc/alloy/config.alloy
+        # volume shared with appserver
+        - share-volume_appserver_log_apache2:/logs/appserver_apache2
+        # volume shared with database
+        - share-volume_database_log_mysql:/logs/database_mysql
+
+  database:
+    # run_as_root:
+    #   - rm /opt/bitnami/mysql/logs/mysqld.log
+    #   - touch /opt/bitnami/mysql/logs/mysqld.log
+    #   - chown -R 1001:1001 /opt/bitnami/mysql/logs
+    overrides:
+      # environment:
+      #   LANDO_NO_USER_PERMS: nope
+
+      ## Override the container entrypoint.
+      # entrypoint: ["/bin/sh", "-c", "chown -R 1001:1001 /opt/bitnami/mysql/logs && exec /docker-entrypoint.sh mysqld"]
+
+      volumes:
+        # volume shared with alloy
+        - share-volume_database_log_mysql:/opt/bitnami/mysql/logs
